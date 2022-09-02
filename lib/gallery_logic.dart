@@ -15,7 +15,8 @@ class GalleryLogic extends GetxController {
     getItems();
   }
 
-  GalleryFolderWithItems? get selectedGalleryFolderWithItems => _selectedGalleryFolderWithItems;
+  GalleryFolderWithItems? get selectedGalleryFolderWithItems =>
+      _selectedGalleryFolderWithItems;
 
   onSelectFolderListItem(GalleryFolderWithItems v) {
     _selectedGalleryFolderWithItems = v;
@@ -29,11 +30,14 @@ class GalleryLogic extends GetxController {
     List<GalleryFolderWithItems> assetPathEntityList = [];
     var pathList = await getFolderList();
     for (var folder in pathList) {
-      var assetList = await folder.assetList;
+      final assetCount = await folder.assetCountAsync;
+      final List<AssetEntity> assetList = assetCount == 0
+          ? []
+          : (await folder.getAssetListRange(start: 0, end: assetCount));
       var galleryFolderWithItems = GalleryFolderWithItems(
         assetPathEntity: folder,
         items: assetList,
-        assetCount: folder.assetCount,
+        assetCount: assetCount,
         name: folder.name,
       );
       assetPathEntityList.add(galleryFolderWithItems);
@@ -47,7 +51,6 @@ class GalleryLogic extends GetxController {
     try {
       var list = await PhotoManager.getAssetPathList(
           type: RequestType.image); // RequestType.video for video
-      list.sort((a, b) => a.assetCount.compareTo(b.assetCount));
       update();
       return list;
     } catch (e) {

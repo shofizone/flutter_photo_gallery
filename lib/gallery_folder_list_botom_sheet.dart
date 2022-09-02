@@ -70,8 +70,8 @@ class _GalleryFolderListBottomSheetState extends State<GalleryFolderListBottomSh
 
   Future<Uint8List?> _getThumb(List<AssetEntity> items) async {
     for (var v in items) {
-      if (await v.thumbData != null) {
-        return v.thumbData;
+      if (await v.thumbnailData != null) {
+        return v.thumbnailData;
       }
     }
     return null;

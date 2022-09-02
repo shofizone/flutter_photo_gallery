@@ -20,7 +20,7 @@ class GalleryGridTile extends StatelessWidget {
       builder: (logic) {
         bool selected = logic.selectedImagesIds.contains(assetEntity.id);
         return FutureBuilder<Uint8List?>(
-            future: assetEntity.thumbData,
+            future: assetEntity.thumbnailData,
             builder: (context, snapshot) {
               return Container(
                 decoration: BoxDecoration(
